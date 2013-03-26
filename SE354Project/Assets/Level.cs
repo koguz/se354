@@ -8,12 +8,6 @@ public class Spawn {
 		position = p;
 		lastSpawn = -1;
 		spawnInterval = 0;
-		/*item = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		item.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-		item.transform.position = position + (new Vector3(0, 0.3f, 0));
-		item.AddComponent(typeof(Sinus));
-		item.AddComponent(typeof(Spawner));
-		item.tag = "Spawner";*/
 	}
 	public virtual void itemPicked() { 
 		Debug.LogError("You MUST implement the itemPicked()"); 
@@ -27,10 +21,10 @@ public class Spawn {
 	public float spawnInterval;
 }
 
-public class SMachineGun:Spawn {
-	public SMachineGun(Vector3 p):base(p) {
+public class HeavyMachineGun:Spawn {
+	public HeavyMachineGun(Vector3 p):base(p) {
 		spawnItem();
-		spawnInterval = 3;
+		spawnInterval = 10;
 	}
 	
 	public override void itemPicked() {
@@ -89,7 +83,7 @@ public class Level : MonoBehaviour {
 		for(int i=0;i<players.Count;i++) {
 			GameObject player = (GameObject) Instantiate(players[i], playerSpawns[i], Quaternion.identity);
 			player.tag = "Player";
-			player.AddComponent(typeof(SimpleRider));
+			//player.AddComponent(typeof(SimpleRider));
 		}
 	}
 	
@@ -123,7 +117,7 @@ public class Level : MonoBehaviour {
 					kare.renderer.material = duvar;
 					break;
 				case 2:
-					weaponSpawns.Add(new SMachineGun(new Vector3(i, 0, j)));
+					weaponSpawns.Add(new HeavyMachineGun(new Vector3(i, 0, j)));
 					break;
 				case 3:
 					itemSpawns.Add(new Spawn(new Vector3(i, 0, j)));
