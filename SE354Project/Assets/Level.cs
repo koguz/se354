@@ -51,6 +51,7 @@ public class HeavyMachineGun:Spawn {
 public class Level : MonoBehaviour {
 	public string LevelFileName = "Level00.txt";
 	public List<GameObject> players;
+	GameObject[] ps;
 	int[,] map;
 	List<Vector3> playerSpawns;
 	List<Spawn> itemSpawns;
@@ -68,6 +69,7 @@ public class Level : MonoBehaviour {
 	void Start () {
 		LoadMap();
 		LoadPlayers();
+		ps = GameObject.FindGameObjectsWithTag("Player");
 	}
 	
 	// Update is called once per frame
@@ -78,6 +80,14 @@ public class Level : MonoBehaviour {
 			if (weaponSpawns[i].item == null && (Time.fixedTime - weaponSpawns[i].lastSpawn > weaponSpawns[i].spawnInterval)) {
 				weaponSpawns[i].spawnItem();
 			}
+		}
+		
+		for(int i=0;i<ps.Length;i++) {
+			if(!ps[i].activeSelf && 
+				(Time.time - ps[i].GetComponent<AITankScript>().disabledTime) > 5) {
+				ps[i].transform.position = playerSpawns[Random.Range(0, playerSpawns.Count-1)];
+				ps[i].SetActive(true);
+			} 
 		}
 	}
 	

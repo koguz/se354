@@ -7,6 +7,7 @@ public class AITankScript : MonoBehaviour {
 	private int health = 100;
 	private int armour = 50;
 	private int puan = 0;
+	public float disabledTime;
 	
 	private List<Weapon> weapons;
 	private int currentWeapon;
@@ -50,9 +51,10 @@ public class AITankScript : MonoBehaviour {
 	
 	public bool takeAHit(int damage) {
 		health -= damage;
-		//Debug.Log(health);
+		Debug.Log(health);
 		if(health <= 0) {
-			Destroy(gameObject);
+			disabledTime = Time.time;
+			gameObject.SetActive(false);
 			return true;
 		} else return false;
 	}
@@ -67,7 +69,7 @@ public class AITankScript : MonoBehaviour {
 			( weapons[currentWeapon].ammoCount == 0 ||
 			  (Time.time - weapons[currentWeapon].lastFired) < weapons[currentWeapon].ammoPerSec
 			) {
-			Debug.LogWarning("Can not fire... yet (check ammo or ammoPerSec)");
+			Debug.LogWarning("Cannot fire... yet");
 			return;
 		}
 		Vector3 direction = gameObject.transform.forward;
