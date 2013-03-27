@@ -5,7 +5,7 @@ public class Spawner : MonoBehaviour {
 	Spawn parent;
 	// Use this for initialization
 	void Start () {
-	
+		
 	}
 	
 	// Update is called once per frame
@@ -16,6 +16,6 @@ public class Spawner : MonoBehaviour {
 		parent = p;
 	}
 	void OnTriggerEnter(Collider other) {
-		parent.itemPicked();
+		parent.itemPicked(other.gameObject.GetComponent<AITankScript>());
 	}
 }

@@ -9,7 +9,7 @@ public class Spawn {
 		lastSpawn = -1;
 		spawnInterval = 0;
 	}
-	public virtual void itemPicked() { 
+	public virtual void itemPicked(AITankScript tank) { 
 		Debug.LogError("You MUST implement the itemPicked()"); 
 	}
 	public virtual void spawnItem() {
@@ -19,18 +19,25 @@ public class Spawn {
 	public GameObject item;
 	public float lastSpawn;
 	public float spawnInterval;
+	public Weapon weapon = null;
 }
 
 public class HeavyMachineGun:Spawn {
 	public HeavyMachineGun(Vector3 p):base(p) {
 		spawnItem();
 		spawnInterval = 10;
+		weapon = new Weapon();
+		weapon.name = "Heavy Machine Gun";
+		weapon.ammoCount = 30;
+		weapon.ammoPerSec = 0.3f;
+		weapon.damPerAmmo = 2;
 	}
 	
-	public override void itemPicked() {
+	public override void itemPicked(AITankScript tank) {
 		GameObject.Destroy(item);
 		item = null;
 		lastSpawn = Time.fixedTime;
+		if (weapon != null) tank.pickupItem(weapon);
 	}
 	public override void spawnItem() {
 		item = (GameObject) GameObject.Instantiate(Resources.Load ("MachineGun"));
@@ -72,7 +79,6 @@ public class Level : MonoBehaviour {
 				weaponSpawns[i].spawnItem();
 			}
 		}
-		
 	}
 	
 	void LoadPlayers() {
