@@ -24,6 +24,14 @@ public class AITankScript : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Space)) Fire();
 	}
 	
+	public void pickupItem(Item item) {
+		health += item.health;
+		armour += item.armour;
+		if (health > 100) health = 100;
+		if (armour > 100) armour = 100;
+		// damage ve invis sonra
+	}
+	
 	public void pickupItem(Weapon weapon) {
 		bool iDontHaveThisWeapon = true;
 		foreach (Weapon w in weapons) {

@@ -16,10 +16,11 @@ public class Spawn {
 		Debug.LogError("You MUST implement the itemPicked()"); 
 	}
 	public Vector3 position;
-	public GameObject item;
+	public GameObject itemMesh;
 	public float lastSpawn;
 	public float spawnInterval;
 	public Weapon weapon = null;
+	public Item item = null;
 }
 
 public class HeavyMachineGun:Spawn {
@@ -34,16 +35,39 @@ public class HeavyMachineGun:Spawn {
 	}
 	
 	public override void itemPicked(AITankScript tank) {
-		GameObject.Destroy(item);
-		item = null;
+		GameObject.Destroy(itemMesh);
+		itemMesh = null;
 		lastSpawn = Time.fixedTime;
 		if (weapon != null) tank.pickupItem(weapon);
 	}
 	public override void spawnItem() {
-		item = (GameObject) GameObject.Instantiate(Resources.Load ("MachineGun"));
-		item.transform.position = position;
-		item.GetComponent<Spawner>().setParent(this);
+		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("MachineGun"));
+		itemMesh.transform.position = position;
+		itemMesh.GetComponent<Spawner>().setParent(this);
 		lastSpawn = Time.fixedTime;
+	}
+}
+
+public class RepairKit:Spawn {
+	public RepairKit(Vector3 p):base(p) {
+		spawnItem(); spawnInterval = 10; // ?
+		item = new Item();
+		item.itemName = "Repair Kit";
+		item.health = 10;
+	}
+	
+	public override void itemPicked(AITankScript tank) {
+		GameObject.Destroy(itemMesh);
+		itemMesh = null;
+		lastSpawn = Time.fixedTime;
+		if (item!=null) tank.pickupItem(item);
+	}
+	
+	public override void spawnItem() {
+		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("Wrench"));
+		itemMesh.transform.position = position;
+		itemMesh.GetComponent<Spawner>().setParent(this);
+		lastSpawn = Time.fixedTime; // time?
 	}
 }
 
@@ -77,8 +101,14 @@ public class Level : MonoBehaviour {
 		// loop through and spawn if necessary
 		
 		for(int i=0;i<weaponSpawns.Count;i++) {
-			if (weaponSpawns[i].item == null && (Time.fixedTime - weaponSpawns[i].lastSpawn > weaponSpawns[i].spawnInterval)) {
+			if (weaponSpawns[i].itemMesh == null && (Time.fixedTime - weaponSpawns[i].lastSpawn > weaponSpawns[i].spawnInterval)) {
 				weaponSpawns[i].spawnItem();
+			}
+		}
+		
+		for(int i=0;i<itemSpawns.Count;i++) {
+			if (itemSpawns[i].itemMesh == null && (Time.fixedTime - itemSpawns[i].lastSpawn > itemSpawns[i].spawnInterval)) {
+				itemSpawns[i].spawnItem();
 			}
 		}
 		
@@ -136,7 +166,7 @@ public class Level : MonoBehaviour {
 					weaponSpawns.Add(new HeavyMachineGun(new Vector3(i, 0, j)));
 					break;
 				case 3:
-					itemSpawns.Add(new Spawn(new Vector3(i, 0, j)));
+					itemSpawns.Add (new RepairKit(new Vector3(i, 0, j)));
 					break;
 				case 4:
 					playerSpawns.Add(new Vector3(i, 0, j));
