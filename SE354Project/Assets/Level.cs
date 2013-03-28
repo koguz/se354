@@ -137,7 +137,7 @@ public class Level : MonoBehaviour {
 		StreamReader dosya = File.OpenText("Assets/" + LevelFileName);
 		string icerik = dosya.ReadToEnd();
 		dosya.Close();
-		string[] satirlar = icerik.Split("\r\n"[0]);
+		string[] satirlar = icerik.Split("\n"[0]);
 		size = satirlar.Length;
 		map = new int[size, size];
 		Material zemin = (Material) Resources.Load ("Floor", typeof(Material));
