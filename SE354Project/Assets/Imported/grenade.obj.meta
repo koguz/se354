@@ -1,15 +1,20 @@
 fileFormatVersion: 2
-guid: e5a76a7e448e1ba49b945f89aed320b5
+guid: d51694ae3aea16d41b68ccf7315a97f1
 ModelImporter:
   serializedVersion: 15
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Regroup01
-    400000: //RootNode
-    400002: Regroup01
-    2300000: Regroup01
-    3300000: Regroup01
-    4300000: Regroup01
+    100000: bomba
+    100002: cek
+    100004: //RootNode
+    400000: bomba
+    400002: cek
+    400004: //RootNode
+    2300000: bomba
+    2300002: cek
+    3300000: bomba
+    3300002: cek
+    4300000: bomba
+    4300002: cek
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -27,7 +32,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .0500000007
+    globalScale: .0299999993
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1

@@ -25,6 +25,7 @@ public class AITankScript : MonoBehaviour {
 	}
 	
 	public void pickupItem(Item item) {
+		Debug.Log ("picking up item: " + item.itemName);
 		health += item.health;
 		armour += item.armour;
 		if (health > 100) health = 100;
@@ -33,6 +34,7 @@ public class AITankScript : MonoBehaviour {
 	}
 	
 	public void pickupItem(Weapon weapon) {
+		Debug.Log ("picking up weapon: " + weapon.name);
 		bool iDontHaveThisWeapon = true;
 		foreach (Weapon w in weapons) {
 			if (w.name.Equals(weapon.name)) {

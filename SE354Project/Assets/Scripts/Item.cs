@@ -6,5 +6,5 @@ public class Item { // : MonoBehaviour {
 	public int health = 0;
 	public int armour =  0;
 	public int damage = 1;
-	public bool invisibility = false;
+	public bool invulnerability = false;
 }

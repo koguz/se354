@@ -1,15 +1,20 @@
 fileFormatVersion: 2
-guid: e5a76a7e448e1ba49b945f89aed320b5
+guid: 62cf65b0f2612a643a85274fce09a8f5
 ModelImporter:
   serializedVersion: 15
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Regroup01
-    400000: //RootNode
-    400002: Regroup01
-    2300000: Regroup01
-    3300000: Regroup01
-    4300000: Regroup01
+    100000: arka
+    100002: govde
+    100004: //RootNode
+    400000: arka
+    400002: govde
+    400004: //RootNode
+    2300000: arka
+    2300002: govde
+    3300000: arka
+    3300002: govde
+    4300000: arka
+    4300002: govde
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -27,7 +32,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .0500000007
+    globalScale: .0199999996
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1

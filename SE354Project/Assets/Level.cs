@@ -10,10 +10,17 @@ public class Spawn {
 		spawnInterval = 0;
 	}
 	public virtual void itemPicked(AITankScript tank) { 
-		Debug.LogError("You MUST implement the itemPicked()"); 
+		// Debug.LogError("You MUST implement the itemPicked()"); 
+		GameObject.Destroy(itemMesh);
+		itemMesh = null;
+		lastSpawn = Time.fixedTime;
+		
 	}
 	public virtual void spawnItem() {
-		Debug.LogError("You MUST implement the itemPicked()"); 
+		// Debug.LogError("You MUST implement the itemPicked()"); 
+		itemMesh.transform.position = position;
+		itemMesh.GetComponent<Spawner>().setParent(this);
+		lastSpawn = Time.fixedTime;
 	}
 	public Vector3 position;
 	public GameObject itemMesh;
@@ -35,42 +42,178 @@ public class HeavyMachineGun:Spawn {
 	}
 	
 	public override void itemPicked(AITankScript tank) {
-		GameObject.Destroy(itemMesh);
-		itemMesh = null;
-		lastSpawn = Time.fixedTime;
+		base.itemPicked(tank);
 		if (weapon != null) tank.pickupItem(weapon);
 	}
 	public override void spawnItem() {
 		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("MachineGun"));
-		itemMesh.transform.position = position;
-		itemMesh.GetComponent<Spawner>().setParent(this);
-		lastSpawn = Time.fixedTime;
+		base.spawnItem();
+	}
+}
+
+public class Grenade:Spawn {
+	public Grenade(Vector3 p):base(p) {
+		spawnItem();
+		spawnInterval = 10;
+		weapon = new Weapon();
+		weapon.name = "Grenade";
+		weapon.ammoCount = 3;
+		weapon.ammoPerSec = 2;
+		weapon.damPerAmmo = 15;
+	}
+	
+	public override void itemPicked(AITankScript tank) {
+		base.itemPicked(tank);
+		if (weapon != null) tank.pickupItem(weapon);
+	}
+	
+	public override void spawnItem() {
+		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("Grenade"));
+		base.spawnItem();
+	}
+}
+
+public class Missile:Spawn {
+	public Missile(Vector3 p):base(p) {
+		spawnItem();
+		spawnInterval = 15;
+		weapon = new Weapon();
+		weapon.name = "Missile";
+		weapon.ammoCount = 3;
+		weapon.ammoPerSec = 3;
+		weapon.damPerAmmo = 30;
+	}
+	
+	public override void itemPicked(AITankScript tank) {
+		base.itemPicked(tank);
+		if (weapon != null) tank.pickupItem(weapon);
+	}
+	
+	public override void spawnItem() {
+		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("Missile"));
+		base.spawnItem();
+	}
+}
+
+public class Cannon:Spawn {
+	public Cannon(Vector3 p):base(p) {
+		spawnItem();
+		spawnInterval = 30;
+		weapon = new Weapon();
+		weapon.name = "Cannon";
+		weapon.ammoCount = 2;
+		weapon.ammoPerSec = 5;
+		weapon.damPerAmmo = 40;
+	}
+	
+	public override void itemPicked(AITankScript tank) {
+		base.itemPicked(tank);
+		if (weapon != null) tank.pickupItem(weapon);
+	}
+	
+	public override void spawnItem() {
+		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("Cannon"));
+		base.spawnItem();
+	}
+}
+
+public class BFG:Spawn {
+	public BFG(Vector3 p):base(p) {
+		spawnItem();
+		spawnInterval = 120;
+		weapon = new Weapon();
+		weapon.name = "BFG";
+		weapon.ammoCount = 1;
+		weapon.ammoPerSec = 5;
+		weapon.damPerAmmo = 80;
+	}
+	
+	public override void itemPicked(AITankScript tank) {
+		base.itemPicked(tank);
+		if (weapon != null) tank.pickupItem(weapon);
+	}
+	
+	public override void spawnItem() {
+		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("BFG"));
+		base.spawnItem();
 	}
 }
 
 public class RepairKit:Spawn {
 	public RepairKit(Vector3 p):base(p) {
-		spawnItem(); spawnInterval = 10; // ?
+		spawnItem(); spawnInterval = 30; // ?
 		item = new Item();
 		item.itemName = "Repair Kit";
 		item.health = 10;
 	}
 	
 	public override void itemPicked(AITankScript tank) {
-		GameObject.Destroy(itemMesh);
-		itemMesh = null;
-		lastSpawn = Time.fixedTime;
+		base.itemPicked(tank);
 		if (item!=null) tank.pickupItem(item);
 	}
 	
 	public override void spawnItem() {
 		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("Wrench"));
-		itemMesh.transform.position = position;
-		itemMesh.GetComponent<Spawner>().setParent(this);
-		lastSpawn = Time.fixedTime; // time?
+		base.spawnItem();
 	}
 }
 
+public class Armour:Spawn {
+	public Armour(Vector3 p):base(p) {
+		spawnItem(); spawnInterval = 30; // ?
+		item = new Item();
+		item.itemName = "Armour";
+		item.armour = 10;
+	}
+	
+	public override void itemPicked(AITankScript tank) {
+		base.itemPicked(tank);
+		if (item!=null) tank.pickupItem(item);
+	}
+	
+	public override void spawnItem() {
+		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("Armour"));
+		base.spawnItem();
+	}
+}
+
+public class HexDamage:Spawn {
+	public HexDamage(Vector3 p):base(p) {
+		spawnItem(); spawnInterval = 180; // ?
+		item = new Item();
+		item.itemName = "Hex Damage";
+		item.damage = 6;
+	}
+	
+	public override void itemPicked(AITankScript tank) {
+		base.itemPicked(tank);
+		if (item!=null) tank.pickupItem(item);
+	}
+	
+	public override void spawnItem() {
+		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("HexDamage"));
+		base.spawnItem();
+	}
+}
+
+public class Invulnerability:Spawn {
+	public Invulnerability(Vector3 p):base(p) {
+		spawnItem(); spawnInterval = 120; // ?
+		item = new Item();
+		item.itemName = "Invulnerability";
+		item.invulnerability = true;
+	}
+	
+	public override void itemPicked(AITankScript tank) {
+		base.itemPicked(tank);
+		if (item!=null) tank.pickupItem(item);
+	}
+	
+	public override void spawnItem() {
+		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("Invulnerability"));
+		base.spawnItem();
+	}
+}
 
 public class Level : MonoBehaviour {
 	public string LevelFileName = "Level00.txt";
@@ -85,9 +228,16 @@ public class Level : MonoBehaviour {
 	 * 0 -> empty
 	 * 1 -> wall
 	 * 2 -> machine gun spawn point
-	 * 3 -> armor spawn point
+	 * 3 -> repair kit spawn point
 	 * 4 -> player spawn point
 	 * 5 -> water
+	 * 6 -> armour spawn point
+	 * 7 -> bfg spawn point
+	 * 8 -> cannon spawn point
+	 * 9 -> grenade spawn point
+	 * 10 -> hex damage spawn point
+	 * 11 -> invulnerability spawn point
+	 * 12 -> missile spawn point
 	 */
 	// Use this for initialization
 	void Start () {
@@ -174,6 +324,27 @@ public class Level : MonoBehaviour {
 				case 5:
 					kare.renderer.material = su;
 					kare.AddComponent(typeof(WaterSimple));
+					break;
+				case 6:
+					itemSpawns.Add (new Armour(new Vector3(i, 0, j)));
+					break;
+				case 7:
+					weaponSpawns.Add (new BFG(new Vector3(i, 0, j)));
+					break;
+				case 8:
+					weaponSpawns.Add (new Cannon(new Vector3(i, 0, j)));
+					break;
+				case 9:
+					weaponSpawns.Add (new Grenade(new Vector3(i, 0, j)));
+					break;
+				case 10:
+					itemSpawns.Add (new HexDamage(new Vector3(i, 0, j)));
+					break;
+				case 11:
+					itemSpawns.Add (new Invulnerability(new Vector3(i, 0, j)));
+					break;
+				case 12:
+					weaponSpawns.Add (new Missile(new Vector3(i, 0, j)));
 					break;
 				}
 			}
