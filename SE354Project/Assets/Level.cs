@@ -10,17 +10,15 @@ public class Spawn {
 		spawnInterval = 0;
 	}
 	public virtual void itemPicked(AITankScript tank) { 
-		// Debug.LogError("You MUST implement the itemPicked()"); 
 		GameObject.Destroy(itemMesh);
 		itemMesh = null;
-		lastSpawn = Time.fixedTime;
+		lastSpawn = Time.time;
 		
 	}
 	public virtual void spawnItem() {
-		// Debug.LogError("You MUST implement the itemPicked()"); 
 		itemMesh.transform.position = position;
 		itemMesh.GetComponent<Spawner>().setParent(this);
-		lastSpawn = Time.fixedTime;
+		lastSpawn = Time.time;
 	}
 	public Vector3 position;
 	public GameObject itemMesh;
@@ -251,13 +249,13 @@ public class Level : MonoBehaviour {
 		// loop through and spawn if necessary
 		
 		for(int i=0;i<weaponSpawns.Count;i++) {
-			if (weaponSpawns[i].itemMesh == null && (Time.fixedTime - weaponSpawns[i].lastSpawn > weaponSpawns[i].spawnInterval)) {
+			if (weaponSpawns[i].itemMesh == null && (Time.time - weaponSpawns[i].lastSpawn > weaponSpawns[i].spawnInterval)) {
 				weaponSpawns[i].spawnItem();
 			}
 		}
 		
 		for(int i=0;i<itemSpawns.Count;i++) {
-			if (itemSpawns[i].itemMesh == null && (Time.fixedTime - itemSpawns[i].lastSpawn > itemSpawns[i].spawnInterval)) {
+			if (itemSpawns[i].itemMesh == null && (Time.time - itemSpawns[i].lastSpawn > itemSpawns[i].spawnInterval)) {
 				itemSpawns[i].spawnItem();
 			}
 		}
@@ -266,6 +264,7 @@ public class Level : MonoBehaviour {
 			if(!ps[i].activeSelf && 
 				(Time.time - ps[i].GetComponent<AITankScript>().disabledTime) > 5) {
 				ps[i].transform.position = playerSpawns[Random.Range(0, playerSpawns.Count-1)];
+				ps[i].GetComponent<AITankScript>().ClearValues();
 				ps[i].SetActive(true);
 			} 
 		}
@@ -279,7 +278,6 @@ public class Level : MonoBehaviour {
 		for(int i=0;i<players.Count;i++) {
 			GameObject player = (GameObject) Instantiate(players[i], playerSpawns[i], Quaternion.identity);
 			player.tag = "Player";
-			//player.AddComponent(typeof(SimpleRider));
 		}
 	}
 	
