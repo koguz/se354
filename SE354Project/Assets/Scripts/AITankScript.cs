@@ -13,6 +13,8 @@ public class AITankScript : MonoBehaviour {
 	private float hexTime;
 	private int damageMult;
 	
+	public string playername;
+	
 	private List<Weapon> weapons;
 	private int currentWeapon;
 	
@@ -24,6 +26,10 @@ public class AITankScript : MonoBehaviour {
 		invulnerable = false;
 		damageMult = 1;
 	}
+	
+	public int getHealth() { return health; }
+	public int getArmour() { return armour; }
+	public int getPuan()   { return puan;   }
 	
 	public void ClearValues() {
 		weapons.Clear();
