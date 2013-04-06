@@ -279,6 +279,8 @@ public class Level : MonoBehaviour {
 		GUI.Label(new Rect(5, 5, 200, 400), display);
 	}
 	
+	public int[,] getMap() { return map; }
+	
 	void LoadPlayers() {
 		if(players.Count < playerSpawns.Count) {
 			Debug.LogError("More players than spawn points :(");
@@ -287,7 +289,7 @@ public class Level : MonoBehaviour {
 		for(int i=0;i<players.Count;i++) {
 			GameObject player = (GameObject) Instantiate(players[i], playerSpawns[i], Quaternion.identity);
 			player.tag = "Player";
-			player.GetComponent<AITankScript>().playername = "Player" + i;
+			//player.GetComponent<AITankScript>().playername = "Player" + i;
 		}
 	}
 	
