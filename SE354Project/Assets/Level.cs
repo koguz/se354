@@ -320,6 +320,10 @@ public class Level : MonoBehaviour {
 					break;
 				case 1:
 					kare.transform.localScale = new Vector3(1.0f, 1.4f, 1.0f);
+					kare.AddComponent(typeof(Obstacle));
+					BoxCollider t = (BoxCollider)kare.collider;
+					t.isTrigger = true;
+					t.size = new Vector3(0.25f, 1, 0.25f);
 					kare.renderer.material = duvar;
 					break;
 				case 2:
@@ -333,7 +337,12 @@ public class Level : MonoBehaviour {
 					break;
 				case 5:
 					kare.renderer.material = su;
+					kare.AddComponent(typeof(Obstacle));
 					kare.AddComponent(typeof(WaterSimple));
+					BoxCollider t1 = (BoxCollider)kare.collider;
+					t1.isTrigger = true;
+					t1.size = new Vector3(0.25f, 80, 0.25f);
+					t1.center = new Vector3(0, 30, 0);
 					break;
 				case 6:
 					itemSpawns.Add (new Armour(new Vector3(i, 0, j)));

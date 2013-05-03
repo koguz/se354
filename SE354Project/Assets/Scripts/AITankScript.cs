@@ -105,6 +105,12 @@ public class AITankScript : MonoBehaviour {
 		} else return false;
 	}
 	
+	public void hitObstacle() {
+		disabledTime = Time.time;
+		gameObject.SetActive(false);
+		puan--;
+	}
+	
 	public void increasePoints() {
 		puan++;
 	}
