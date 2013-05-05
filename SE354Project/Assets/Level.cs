@@ -115,12 +115,12 @@ public class Cannon:Spawn {
 	}
 }
 
-public class BFG:Spawn {
-	public BFG(Vector3 p):base(p) {
+public class DeathBringer:Spawn {
+	public DeathBringer(Vector3 p):base(p) {
 		spawnItem();
 		spawnInterval = 120;
 		weapon = new Weapon();
-		weapon.name = "BFG";
+		weapon.name = "DeathBringer";
 		weapon.ammoCount = 1;
 		weapon.ammoPerSec = 5;
 		weapon.damPerAmmo = 80;
@@ -132,7 +132,7 @@ public class BFG:Spawn {
 	}
 	
 	public override void spawnItem() {
-		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("BFG"));
+		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("DeathBringer"));
 		base.spawnItem();
 	}
 }
@@ -217,6 +217,7 @@ public class Level : MonoBehaviour {
 	public string LevelFileName = "Level00.txt";
 	public List<GameObject> players;
 	GameObject[] ps;
+	private int sure;
 	int[,] map;
 	List<Vector3> playerSpawns;
 	List<Spawn> itemSpawns;
@@ -242,12 +243,16 @@ public class Level : MonoBehaviour {
 		LoadMap();
 		LoadPlayers();
 		ps = GameObject.FindGameObjectsWithTag("Player");
+		sure = 310;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		// loop through and spawn if necessary
+		if (sure - Time.time < 0) {
+			Time.timeScale = 0;
+		}
 		
+		// loop through and spawn if necessary
 		for(int i=0;i<weaponSpawns.Count;i++) {
 			if (weaponSpawns[i].itemMesh == null && (Time.time - weaponSpawns[i].lastSpawn > weaponSpawns[i].spawnInterval)) {
 				weaponSpawns[i].spawnItem();
@@ -276,6 +281,7 @@ public class Level : MonoBehaviour {
 			AITankScript temp = ps[i].GetComponent<AITankScript>();
 			display += temp.playername + " (" + temp.getHealth() + ", " + temp.getArmour() + "): " + temp.getPuan() + "\n";
 		}
+		display += "Time: " + (sure-Time.time) + "\n";
 		GUI.Label(new Rect(5, 5, 200, 400), display);
 	}
 	
@@ -320,11 +326,14 @@ public class Level : MonoBehaviour {
 					break;
 				case 1:
 					kare.transform.localScale = new Vector3(1.0f, 1.4f, 1.0f);
-					kare.AddComponent(typeof(Obstacle));
-					BoxCollider t = (BoxCollider)kare.collider;
-					t.isTrigger = true;
-					t.size = new Vector3(0.25f, 1, 0.25f);
 					kare.renderer.material = duvar;
+					GameObject t1 = new GameObject("walltrigger");
+					t1.transform.position = new Vector3(i, -0.04f, j);
+					t1.transform.localScale = new Vector3(0.25f, 1, 0.25f);
+					t1.AddComponent(typeof(BoxCollider));
+					t1.collider.isTrigger = true;
+					t1.layer = 11;
+					t1.AddComponent(typeof(Obstacle));
 					break;
 				case 2:
 					weaponSpawns.Add(new HeavyMachineGun(new Vector3(i, 0, j)));
@@ -337,18 +346,20 @@ public class Level : MonoBehaviour {
 					break;
 				case 5:
 					kare.renderer.material = su;
-					kare.AddComponent(typeof(Obstacle));
 					kare.AddComponent(typeof(WaterSimple));
-					BoxCollider t1 = (BoxCollider)kare.collider;
-					t1.isTrigger = true;
-					t1.size = new Vector3(0.25f, 80, 0.25f);
-					t1.center = new Vector3(0, 30, 0);
+					GameObject t2 = new GameObject("watertrigger");
+					t2.transform.position = new Vector3(i, -0.04f, j);
+					t2.transform.localScale = new Vector3(0.25f, 1, 0.25f);
+					t2.AddComponent(typeof(BoxCollider));
+					t2.collider.isTrigger = true;
+					t2.layer = 11;
+					t2.AddComponent(typeof(Obstacle));
 					break;
 				case 6:
 					itemSpawns.Add (new Armour(new Vector3(i, 0, j)));
 					break;
 				case 7:
-					weaponSpawns.Add (new BFG(new Vector3(i, 0, j)));
+					weaponSpawns.Add (new DeathBringer(new Vector3(i, 0, j)));
 					break;
 				case 8:
 					weaponSpawns.Add (new Cannon(new Vector3(i, 0, j)));

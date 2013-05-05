@@ -43,7 +43,8 @@ public class AITankScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// if(Input.GetKeyDown(KeyCode.Space)) Fire();
+		//if(Input.GetKeyDown(KeyCode.Space)) Fire();
+		Fire ();
 		if(invulnerable && (Time.time - invulTime > 10)) {
 			invulnerable = false;
 		}
@@ -125,7 +126,7 @@ public class AITankScript : MonoBehaviour {
 		}
 		Vector3 direction = gameObject.transform.forward;
 		GameObject mermi = (GameObject) GameObject.Instantiate(Resources.Load ("Bullet"));
-		mermi.transform.position = gameObject.transform.position + (new Vector3(0.003f, 0.225f, 0.7f));
+		mermi.transform.position = gameObject.transform.position + (gameObject.transform.forward*0.7f);
 		mermi.GetComponent<Bullet>().damage = weapons[currentWeapon].damPerAmmo * damageMult;
 		mermi.GetComponent<Bullet>().parent = this;
 		mermi.GetComponent<Bullet>().direction = direction;
