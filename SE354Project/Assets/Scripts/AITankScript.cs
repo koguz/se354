@@ -1,7 +1,33 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
+public class AStar {
+	public Vector3 start;
+	public Vector3 end;
+	public bool running;
+	public bool complete;
+	public int[,] map;
+	public ArrayList targets;
+	
+	public AStar() {
+		running = false;
+		complete = false;
+		targets = new ArrayList();
+	}
+	
+	public void calculatePath() {
+		Debug.Log("starting thread");
+		running = true;
+		complete = false;
+		for(int i=0;i<int.MaxValue;i++) {
+			int k=i-1;
+		}
+		complete = true;
+		Debug.Log("finished thread");
+	}
+}
 
 public class AITankScript : MonoBehaviour {
 	private int health = 100;
@@ -12,6 +38,8 @@ public class AITankScript : MonoBehaviour {
 	private bool invulnerable;
 	private float hexTime;
 	private int damageMult;
+	private AStar astar;
+	Thread myThread;
 	
 	public string playername;
 	
@@ -25,6 +53,8 @@ public class AITankScript : MonoBehaviour {
 		currentWeapon = 0;
 		invulnerable = false;
 		damageMult = 1;
+		astar = new AStar();
+		
 	}
 	
 	public int getHealth() { return health; }
@@ -44,12 +74,28 @@ public class AITankScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//if(Input.GetKeyDown(KeyCode.Space)) Fire();
-		Fire ();
+		//Fire ();
 		if(invulnerable && (Time.time - invulTime > 10)) {
 			invulnerable = false;
 		}
 		if(damageMult > 1 && (Time.time - hexTime > 10)) {
 			damageMult = 1; 
+		}
+		
+		if(Input.GetKeyDown(KeyCode.P)) {
+			if (astar.running) {
+				// check if it is complete
+				if(astar.complete) {
+					myThread.Join();
+					astar.running = false;
+				}
+			} else {
+				astar.start = new Vector3(0, 0, 0);
+				astar.end   = new Vector3(10, 0, 10);
+				astar.map   = GameObject.Find("Level").GetComponent<Level>().getMap();
+				myThread = new Thread(new ThreadStart(astar.calculatePath));
+				myThread.Start();
+			}
 		}
 	}
 	
@@ -100,15 +146,18 @@ public class AITankScript : MonoBehaviour {
 		armour -= damage;
 		if(armour < 0) armour = 0;
 		if(health <= 0) {
-			disabledTime = Time.time;
-			gameObject.SetActive(false);
+			kill ();
 			return true;
 		} else return false;
 	}
 	
-	public void hitObstacle() {
+	private void kill() {
 		disabledTime = Time.time;
 		gameObject.SetActive(false);
+	}
+	
+	public void hitObstacle() {
+		kill ();
 		puan--;
 	}
 	
@@ -133,6 +182,13 @@ public class AITankScript : MonoBehaviour {
 		weapons[currentWeapon].lastFired = Time.time;
 		if(!weapons[currentWeapon].name.Equals("Machine Gun")) {
 			weapons[currentWeapon].ammoCount--;
+		}
+	}
+	
+	void OnCollisionEnter(Collision collision) {
+		if (collision.collider.gameObject.layer == 10) {
+			kill ();
+			puan--;
 		}
 	}
 	
