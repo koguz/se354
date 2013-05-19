@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
-public class AStar {
+public class NotAStar {
 	public Vector3 start;
 	public Vector3 end;
 	public bool running;
@@ -11,7 +11,7 @@ public class AStar {
 	public int[,] map;
 	public ArrayList targets;
 	
-	public AStar() {
+	public NotAStar() {
 		running = false;
 		complete = false;
 		targets = new ArrayList();
@@ -38,7 +38,7 @@ public class AITankScript : MonoBehaviour {
 	private bool invulnerable;
 	private float hexTime;
 	private int damageMult;
-	private AStar astar;
+	private NotAStar astar;
 	Thread myThread;
 	
 	public string playername;
@@ -53,7 +53,7 @@ public class AITankScript : MonoBehaviour {
 		currentWeapon = 0;
 		invulnerable = false;
 		damageMult = 1;
-		astar = new AStar();
+		astar = new NotAStar();
 		
 	}
 	

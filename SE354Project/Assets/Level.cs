@@ -347,6 +347,14 @@ public class Level : MonoBehaviour {
 				case 5:
 					kare.renderer.material = su;
 					kare.AddComponent(typeof(WaterSimple));
+					
+					BoxCollider t12 = (BoxCollider)kare.collider;
+					t12.isTrigger = true;
+					t12.size = new Vector3(1, 80, 1);
+					t12.center = new Vector3(0, 30, 0);
+					
+					kare.layer = 4; // water does not collide with bullets...
+					
 					GameObject t2 = new GameObject("watertrigger");
 					t2.transform.position = new Vector3(i, -0.04f, j);
 					t2.transform.localScale = new Vector3(0.25f, 1, 0.25f);
