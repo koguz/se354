@@ -33,9 +33,10 @@ public class AITankScript : MonoBehaviour {
 	private int health = 100;
 	private int armour = 50;
 	private int puan = 0;
-	public float disabledTime;
+	private float disabledTime;
 	private float invulTime;
 	private bool invulnerable;
+	private bool died;
 	private float hexTime;
 	private int damageMult;
 	private NotAStar astar;
@@ -54,12 +55,13 @@ public class AITankScript : MonoBehaviour {
 		invulnerable = false;
 		damageMult = 1;
 		astar = new NotAStar();
-		
+		died = false;
 	}
 	
 	public int getHealth() { return health; }
 	public int getArmour() { return armour; }
 	public int getPuan()   { return puan;   }
+	public float getDisTime(){ return disabledTime; }
 	
 	public void ClearValues() {
 		weapons.Clear();
@@ -139,30 +141,35 @@ public class AITankScript : MonoBehaviour {
 		currentWeapon = index;
 	}
 	
-	public bool takeAHit(int damage) {
-		if(invulnerable) return false;
+	public int takeAHit(int damage) {
+		if(invulnerable) return 0;
 		// full armour saves all hit damage, but gets the damage itself...
-		health -= damage - (damage * armour/100); 
+		int damageCaused = damage - (damage * armour/100);
+		health -= damageCaused; 
 		armour -= damage;
 		if(armour < 0) armour = 0;
+		int multiplier = 1;
 		if(health <= 0) {
 			kill ();
-			return true;
-		} else return false;
+			multiplier = 2;
+		} 
+		return damageCaused * multiplier;
 	}
 	
 	private void kill() {
 		disabledTime = Time.time;
 		gameObject.SetActive(false);
+		died = true;
+		Debug.Log ("killed");
 	}
 	
 	public void hitObstacle() {
 		kill ();
-		puan--;
+		puan -= puan/2;
 	}
 	
-	public void increasePoints() {
-		puan++;
+	public void increasePoints(int p) {
+		puan += p;
 	}
 	
 	public void Fire() {
@@ -185,10 +192,20 @@ public class AITankScript : MonoBehaviour {
 		}
 	}
 	
+	public bool isInvulnerable() { return invulnerable; }
+	public bool wasItDead() { 
+		if(died) { 
+			died = false; 
+			return true; 
+		} else {
+			return false;
+		}
+	}
+	
 	void OnCollisionEnter(Collision collision) {
 		if (collision.collider.gameObject.layer == 10) {
 			kill ();
-			puan--;
+			puan = puan/2;
 		}
 	}
 	

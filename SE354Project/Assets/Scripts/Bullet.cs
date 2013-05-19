@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour {
 		Destroy(gameObject);
 		if(other.gameObject.layer == 10) {
 			AITankScript enemy = other.GetComponent<AITankScript>();
-			if(enemy.takeAHit(damage)) parent.increasePoints();
+			parent.increasePoints(enemy.takeAHit(damage));
 		}
 	}
 }

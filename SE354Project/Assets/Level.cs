@@ -267,7 +267,7 @@ public class Level : MonoBehaviour {
 		
 		for(int i=0;i<ps.Length;i++) {
 			if(!ps[i].activeSelf && 
-				(Time.time - ps[i].GetComponent<AITankScript>().disabledTime) > 5) {
+				(Time.time - ps[i].GetComponent<AITankScript>().getDisTime()) > 5) {
 				ps[i].transform.position = playerSpawns[Random.Range(0, playerSpawns.Count-1)];
 				ps[i].GetComponent<AITankScript>().ClearValues();
 				ps[i].SetActive(true);

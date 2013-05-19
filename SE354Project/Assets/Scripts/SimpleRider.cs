@@ -19,6 +19,8 @@ public class SimpleRider : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(gameObject.GetComponent<AITankScript>().wasItDead())
+			Debug.Log ("I was dead, but now I live!"); // this only works once
 		switch(state) {
 		case State.SEARCH:
 			bool searching = true;
