@@ -218,6 +218,7 @@ public class Level : MonoBehaviour {
 	public List<GameObject> players;
 	GameObject[] ps;
 	private int sure;
+	private int spidx;
 	int[,] map;
 	List<Vector3> playerSpawns;
 	List<Spawn> itemSpawns;
@@ -240,6 +241,7 @@ public class Level : MonoBehaviour {
 	 */
 	// Use this for initialization
 	void Start () {
+		spidx = 0;
 		LoadMap();
 		LoadPlayers();
 		ps = GameObject.FindGameObjectsWithTag("Player");
@@ -268,9 +270,10 @@ public class Level : MonoBehaviour {
 		for(int i=0;i<ps.Length;i++) {
 			if(!ps[i].activeSelf && 
 				(Time.time - ps[i].GetComponent<AITankScript>().getDisTime()) > 5) {
-				ps[i].transform.position = playerSpawns[Random.Range(0, playerSpawns.Count-1)];
+				ps[i].transform.position = playerSpawns[spidx%playerSpawns.Count];
 				ps[i].GetComponent<AITankScript>().ClearValues();
 				ps[i].SetActive(true);
+				spidx++;
 			} 
 		}
 	}
