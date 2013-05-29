@@ -24,24 +24,26 @@ public class Spawn {
 	public GameObject itemMesh;
 	public float lastSpawn;
 	public float spawnInterval;
-	public Weapon weapon = null;
-	public Item item = null;
 }
 
 public class HeavyMachineGun:Spawn {
 	public HeavyMachineGun(Vector3 p):base(p) {
 		spawnItem();
 		spawnInterval = 10;
-		weapon = new Weapon();
+	}
+	
+	private Weapon getWeapon() {
+		Weapon weapon = new Weapon();
 		weapon.name = "Heavy Machine Gun";
 		weapon.ammoCount = 30;
 		weapon.ammoPerSec = 0.3f;
 		weapon.damPerAmmo = 2;
+		return weapon;
 	}
 	
 	public override void itemPicked(AITankScript tank) {
 		base.itemPicked(tank);
-		if (weapon != null) tank.pickupItem(weapon);
+		tank.pickupItem(getWeapon());
 	}
 	public override void spawnItem() {
 		itemMesh = (GameObject) GameObject.Instantiate(Resources.Load ("MachineGun"));
@@ -53,16 +55,19 @@ public class Grenade:Spawn {
 	public Grenade(Vector3 p):base(p) {
 		spawnItem();
 		spawnInterval = 10;
-		weapon = new Weapon();
+	}
+	private Weapon getWeapon() {
+		Weapon weapon = new Weapon();
 		weapon.name = "Grenade";
 		weapon.ammoCount = 3;
 		weapon.ammoPerSec = 2;
 		weapon.damPerAmmo = 15;
+		return weapon;
 	}
 	
 	public override void itemPicked(AITankScript tank) {
 		base.itemPicked(tank);
-		if (weapon != null) tank.pickupItem(weapon);
+		tank.pickupItem(getWeapon());
 	}
 	
 	public override void spawnItem() {
@@ -75,16 +80,19 @@ public class Missile:Spawn {
 	public Missile(Vector3 p):base(p) {
 		spawnItem();
 		spawnInterval = 15;
-		weapon = new Weapon();
+	}
+	private Weapon getWeapon() {
+		Weapon weapon = new Weapon();
 		weapon.name = "Missile";
 		weapon.ammoCount = 3;
 		weapon.ammoPerSec = 3;
 		weapon.damPerAmmo = 30;
+		return weapon;
 	}
 	
 	public override void itemPicked(AITankScript tank) {
 		base.itemPicked(tank);
-		if (weapon != null) tank.pickupItem(weapon);
+		tank.pickupItem(getWeapon());
 	}
 	
 	public override void spawnItem() {
@@ -97,16 +105,20 @@ public class Cannon:Spawn {
 	public Cannon(Vector3 p):base(p) {
 		spawnItem();
 		spawnInterval = 30;
-		weapon = new Weapon();
+	}
+	
+	private Weapon getWeapon() {
+		Weapon weapon = new Weapon();
 		weapon.name = "Cannon";
 		weapon.ammoCount = 2;
 		weapon.ammoPerSec = 5;
 		weapon.damPerAmmo = 40;
+		return weapon;
 	}
 	
 	public override void itemPicked(AITankScript tank) {
 		base.itemPicked(tank);
-		if (weapon != null) tank.pickupItem(weapon);
+		tank.pickupItem(getWeapon());
 	}
 	
 	public override void spawnItem() {
@@ -119,16 +131,19 @@ public class DeathBringer:Spawn {
 	public DeathBringer(Vector3 p):base(p) {
 		spawnItem();
 		spawnInterval = 120;
-		weapon = new Weapon();
+	}
+	private Weapon getWeapon() {
+		Weapon weapon = new Weapon();
 		weapon.name = "DeathBringer";
 		weapon.ammoCount = 1;
 		weapon.ammoPerSec = 5;
 		weapon.damPerAmmo = 80;
+		return weapon;
 	}
 	
 	public override void itemPicked(AITankScript tank) {
 		base.itemPicked(tank);
-		if (weapon != null) tank.pickupItem(weapon);
+		tank.pickupItem(getWeapon());
 	}
 	
 	public override void spawnItem() {
@@ -140,14 +155,18 @@ public class DeathBringer:Spawn {
 public class RepairKit:Spawn {
 	public RepairKit(Vector3 p):base(p) {
 		spawnItem(); spawnInterval = 30; // ?
-		item = new Item();
+	}
+	
+	private Item getItem() {
+		Item item = new Item();
 		item.itemName = "Repair Kit";
 		item.health = 10;
+		return item;
 	}
 	
 	public override void itemPicked(AITankScript tank) {
 		base.itemPicked(tank);
-		if (item!=null) tank.pickupItem(item);
+		tank.pickupItem(getItem());
 	}
 	
 	public override void spawnItem() {
@@ -159,14 +178,17 @@ public class RepairKit:Spawn {
 public class Armour:Spawn {
 	public Armour(Vector3 p):base(p) {
 		spawnItem(); spawnInterval = 30; // ?
-		item = new Item();
+	}
+	private Item getItem() {
+		Item item = new Item();
 		item.itemName = "Armour";
 		item.armour = 10;
+		return item;
 	}
 	
 	public override void itemPicked(AITankScript tank) {
 		base.itemPicked(tank);
-		if (item!=null) tank.pickupItem(item);
+		tank.pickupItem(getItem());
 	}
 	
 	public override void spawnItem() {
@@ -178,14 +200,17 @@ public class Armour:Spawn {
 public class HexDamage:Spawn {
 	public HexDamage(Vector3 p):base(p) {
 		spawnItem(); spawnInterval = 180; // ?
-		item = new Item();
+	}
+	private Item getItem() {
+		Item item = new Item();
 		item.itemName = "Hex Damage";
 		item.damage = 6;
+		return item;
 	}
 	
 	public override void itemPicked(AITankScript tank) {
 		base.itemPicked(tank);
-		if (item!=null) tank.pickupItem(item);
+		tank.pickupItem(getItem ());
 	}
 	
 	public override void spawnItem() {
@@ -197,14 +222,17 @@ public class HexDamage:Spawn {
 public class Invulnerability:Spawn {
 	public Invulnerability(Vector3 p):base(p) {
 		spawnItem(); spawnInterval = 120; // ?
-		item = new Item();
+	}
+	private Item getItem() {
+		Item item = new Item();
 		item.itemName = "Invulnerability";
 		item.invulnerability = true;
+		return item;
 	}
 	
 	public override void itemPicked(AITankScript tank) {
 		base.itemPicked(tank);
-		if (item!=null) tank.pickupItem(item);
+		tank.pickupItem(getItem());
 	}
 	
 	public override void spawnItem() {
@@ -291,12 +319,12 @@ public class Level : MonoBehaviour {
 	public int[,] getMap() { return map; }
 	
 	void LoadPlayers() {
-		if(players.Count < playerSpawns.Count) {
+		if(players.Count > playerSpawns.Count) {
 			Debug.LogError("More players than spawn points :(");
 			return;
 		}
 		for(int i=0;i<players.Count;i++) {
-			GameObject player = (GameObject) Instantiate(players[i], playerSpawns[i], Quaternion.identity);
+			GameObject player = (GameObject) Instantiate(players[i], playerSpawns[2*i+1], Quaternion.identity);
 			player.tag = "Player";
 			//player.GetComponent<AITankScript>().playername = "Player" + i;
 		}

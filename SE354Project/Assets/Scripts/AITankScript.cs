@@ -76,6 +76,7 @@ public class AITankScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//if(Input.GetKeyDown(KeyCode.Space)) Fire();
+		//if(Input.GetKeyDown(KeyCode.A)) setCurrentWeapon(currentWeapon+1);
 		//Fire ();
 		if(invulnerable && (Time.time - invulTime > 10)) {
 			invulnerable = false;
