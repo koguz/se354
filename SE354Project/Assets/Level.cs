@@ -243,10 +243,14 @@ public class Invulnerability:Spawn {
 
 public class Level : MonoBehaviour {
 	public string LevelFileName = "Level00.txt";
+	public Transform kamera;
+	private Kamera kameraScript;
 	public List<GameObject> players;
 	GameObject[] ps;
 	private int sure;
 	private int spidx;
+	private float kameraSure;
+	private int kameraIdx;
 	int[,] map;
 	List<Vector3> playerSpawns;
 	List<Spawn> itemSpawns;
@@ -270,16 +274,24 @@ public class Level : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spidx = 0;
+		kameraSure = Time.time;
+		kameraIdx = 0;
 		LoadMap();
 		LoadPlayers();
 		ps = GameObject.FindGameObjectsWithTag("Player");
 		sure = 310;
+		kameraScript = kamera.GetComponent<Kamera>();
+		kameraScript.tank = ps[kameraIdx].transform;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (sure - Time.time < 0) {
 			Time.timeScale = 0;
+		}
+		Debug.Log (Time.time - kameraSure);
+		if (Time.time - kameraSure > 10 || !ps[kameraIdx].activeSelf) {
+			nextTank();
 		}
 		
 		// loop through and spawn if necessary
@@ -306,6 +318,12 @@ public class Level : MonoBehaviour {
 		}
 	}
 	
+	void nextTank() {
+		kameraIdx = (kameraIdx + 1) % ps.Length;
+		kameraScript.tank = ps[kameraIdx].transform;
+		kameraSure = Time.time;
+	}
+	
 	void OnGUI() {
 		string display = "";
 		for(int i=0;i<ps.Length;i++) {
@@ -313,6 +331,7 @@ public class Level : MonoBehaviour {
 			display += temp.playername + " (" + temp.getHealth() + ", " + temp.getArmour() + "): " + temp.getPuan() + "\n";
 		}
 		display += "Time: " + (sure-Time.time) + "\n";
+		display += "Camera is following: " + ps[kameraIdx].GetComponent<AITankScript>().playername;
 		GUI.Label(new Rect(5, 5, 200, 400), display);
 	}
 	
