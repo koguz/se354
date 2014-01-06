@@ -289,7 +289,7 @@ public class Level : MonoBehaviour {
 		if (sure - Time.time < 0) {
 			Time.timeScale = 0;
 		}
-		Debug.Log (Time.time - kameraSure);
+		// Debug.Log (Time.time - kameraSure);
 		if (Time.time - kameraSure > 10 || !ps[kameraIdx].activeSelf) {
 			nextTank();
 		}
